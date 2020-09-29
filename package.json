@@ -1,0 +1,25 @@
+{
+  "name": "aliyun-resolve",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "whyour",
+  "license": "MIT",
+  "dependencies": {
+    "@alicloud/pop-core": "^1.7.9",
+    "axios": "^0.20.0",
+    "is-docker": "^2.1.1",
+    "public-ip": "^4.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whyour/aliyun-resolve.git"
+  },
+  "bugs": {
+    "url": "https://github.com/whyour/aliyun-resolve/issues"
+  },
+  "homepage": "https://github.com/whyour/aliyun-resolve#readme",
+  "description": "借助阿里云解析API实现动态解析"
+}
