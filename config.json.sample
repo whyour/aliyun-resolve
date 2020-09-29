@@ -1,5 +1,6 @@
 {
 	"AccessKey": "AK",
 	"AccessKeySecret": "AS",
-	"Domain": "sub.example.com"
+	"Domain": "sub.example.com",
+	"AimDomain": "sub.example.com"
 }
