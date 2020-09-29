@@ -4,6 +4,8 @@ const isDocker = require("is-docker");
 const network = require("./net");
 const dns = require("dns");
 const schedule = require("node-schedule");
+const http = require("http");
+const https = require("https");
 
 let AccessKey = null;
 let AccessKeySecret = null;
@@ -216,6 +218,30 @@ function scheduleTask() {
   //second
   schedule.scheduleJob({ date: 1, hour: 0, minute: 0, second: 0 }, function () {
     MAIN();
+    http
+      .get(`http://${Domain}`, function (res) {
+        console.log("statusCode: ", res.statusCode);
+        console.log("headers: ", res.headers);
+
+        res.on("data", (d) => {
+          console.log("data", d);
+        });
+      })
+      .on("error", (e) => {
+        console.error(e);
+      });
+    https
+      .get(`https://${Domain}`, function (res) {
+        console.log("statusCode: ", res.statusCode);
+        console.log("headers: ", res.headers);
+
+        res.on("data", (d) => {
+          console.log("data", d);
+        });
+      })
+      .on("error", (e) => {
+        console.error(e);
+      });
   });
 }
 
