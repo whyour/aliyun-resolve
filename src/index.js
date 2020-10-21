@@ -218,41 +218,49 @@ function scheduleTask() {
   //second
   schedule.scheduleJob({ date: 1, hour: 0, minute: 0, second: 0 }, function () {
     MAIN();
-    http
-      .get(`http://${Domain}`, function (res) {
-        console.log("statusCode: ", res.statusCode);
-        console.log("headers: ", res.headers);
+    const resultDomain = typeof Domain === "string" ? [Domain] : Domain;
 
-        res.on("data", (d) => {
-          console.log("data", d);
-        });
-      })
-      .on("error", (e) => {
-        console.error(e);
-      });
-    https
-      .get(`https://${Domain}`, function (res) {
-        console.log("statusCode: ", res.statusCode);
-        console.log("headers: ", res.headers);
+    for (let i = 0; i < resultDomain.length; i++) {
+      http
+        .get(`http://${resultDomain[i]}`, function (res) {
+          console.log("statusCode: ", res.statusCode);
+          console.log("headers: ", res.headers);
 
-        res.on("data", (d) => {
-          console.log("data", d);
+          res.on("data", (d) => {
+            console.log("data", d);
+          });
+        })
+        .on("error", (e) => {
+          console.error(e);
         });
-      })
-      .on("error", (e) => {
-        console.error(e);
-      });
+      https
+        .get(`https://${resultDomain[i]}`, function (res) {
+          console.log("statusCode: ", res.statusCode);
+          console.log("headers: ", res.headers);
+
+          res.on("data", (d) => {
+            console.log("data", d);
+          });
+        })
+        .on("error", (e) => {
+          console.error(e);
+        });
+    }
   });
 }
 
 async function MAIN() {
   const resultDomain = typeof Domain === "string" ? [Domain] : Domain;
-  const [externalIp] = await getIpv4ByDomain();
-
-  console.log(getTime(), AimDomain, " ip:", externalIp);
+  const aimDomain = typeof AimDomain === "string" ? [AimDomain] : AimDomain;
+  const externalIps = [];
+  for (const domain of aimDomain) {
+    const [externalIp] = await getIpv4ByDomain();
+    console.log(getTime(), domain, " ip:", externalIp);
+    externalIps.push(externalIp);
+  }
 
   for (let i = 0; i < resultDomain.length; i++) {
-    await handleOneDomain(resultDomain[i], externalIp);
+    await handleOneDomain(resultDomain[i], externalIps[i]);
   }
 }
 
