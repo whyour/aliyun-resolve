@@ -185,9 +185,9 @@ function getExternalIp() {
 }
 
 // 获取指定域名ipv4
-function getIpv4ByDomain() {
+function getIpv4ByDomain(domain) {
   return new Promise((resolve, reject) => {
-    dns.resolve4(AimDomain, function (err, address, family) {
+    dns.resolve4(domain, function (err, address, family) {
       if (address) {
         return resolve(address);
       }
@@ -254,7 +254,7 @@ async function MAIN() {
   const aimDomain = typeof AimDomain === "string" ? [AimDomain] : AimDomain;
   const externalIps = [];
   for (const domain of aimDomain) {
-    const [externalIp] = await getIpv4ByDomain();
+    const [externalIp] = await getIpv4ByDomain(domain);
     console.log(getTime(), domain, " ip:", externalIp);
     externalIps.push(externalIp);
   }
